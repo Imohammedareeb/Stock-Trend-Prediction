@@ -7,7 +7,7 @@ This is a simple Streamlit application to visualize and analyze stock trend data
 - **Interactive Visualization:** Select a stock ticker from a dropdown to see its closing price trends over time.
 - **Data Cleaning:** Automatically cleans and processes the stock data (dates, numerical conversion, etc.).
 - **Descriptive Statistics:** Displays a statistical summary of the dataset.
-- **Trend Prediction:** Visualizes actual vs. predicted prices (currently using a dummy prediction for demonstration).
+- **Trend Prediction:** Visualizes actual vs. predicted prices using a machine learning model (LSTM in the standalone app, Linear Regression in the web version).
 
 ## 🛠️ Setup and Installation
 
