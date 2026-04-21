@@ -1,7 +1,11 @@
 {
   "version": 2,
+  "name": "stock-trend-prediction",
   "cleanUrls": true,
   "framework": null,
+  "installCommand": "echo 'No installation needed'",
+  "buildCommand": "echo 'Building static site'",
+  "outputDirectory": ".",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]

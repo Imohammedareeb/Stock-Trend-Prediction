@@ -23,7 +23,7 @@ cd stock-trend-prediction
 
 ### 2. Install dependencies
 ```bash
-pip install -r requirements.txt
+pip install -r python_requirements.txt
 ```
 
 ### 3. Run the application
