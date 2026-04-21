@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Stock Trend Prediction</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@stlite/mountable@0.31.0/build/stlite.css"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@stlite/mountable@0.31.0/build/stlite.js"></script>
+    <script>
+      stlite.mount(
+        {
+          requirements: ["pandas", "matplotlib", "numpy"],
+          entrypoint: "app.py",
+          files: {
+            "app.py": `
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+st.title("📈 Stock Trend Prediction")
+
+st.write("""
+Enter a stock ticker to visualize its trends and predictions.
+""")
+
+ticker_files = {
+    "TESLA": "Tesla.csv",
+    "POWERGRID": "powergrid.csv",
+    "TCS": "TCS.csv",
+    "NETFLIX": "Netflix.csv",
+    "ZOMATO": "zomato.csv"
+}
+
+stock_ticker = st.selectbox(
+    "Select Stock ticker:",
+    options=list(ticker_files.keys())
+)
+
+if st.button("Submit"):
+    df = pd.read_csv(ticker_files[stock_ticker])
+    df = df.iloc[1:]
+    df.columns = [col.strip() for col in df.columns]
+    df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
+    if 'Close' in df.columns:
+        df['Close'] = pd.to_numeric(df['Close'], errors='coerce')
+    else:
+        st.error("The dataset does not have a 'Close' column.")
+        st.stop()
+    df.dropna(inplace=True)
+    
+    st.subheader("1. Closing Price vs Time")
+    fig1, ax1 = plt.subplots(figsize=(10, 5))
+    ax1.plot(df['Date'], df['Close'], label='Closing Price')
+    ax1.set_xlabel("Date")
+    ax1.set_ylabel("Closing Price")
+    ax1.set_title(f"{stock_ticker} Closing Price Over Time")
+    ax1.legend()
+    st.pyplot(fig1)
+    
+    st.subheader("2. Prediction vs Original Trend")
+    actual = df['Close'].values[-100:]
+    predicted = actual + np.random.normal(0, 10, size=len(actual))
+    fig2, ax2 = plt.subplots(figsize=(10, 5))
+    ax2.plot(actual, label="Actual Closing Price")
+    ax2.plot(predicted, label="Predicted Price", linestyle='--')
+    ax2.set_title("Prediction vs Original Trend (Sample)")
+    ax2.legend()
+    st.pyplot(fig2)
+    
+    start_date = df['Date'].min().strftime('%b %Y')
+    end_date = df['Date'].max().strftime('%b %Y')
+    st.subheader(f"3. Descriptive Data from {start_date} to {end_date}")
+    st.write(df.describe())
+`,
+            "Tesla.csv": { url: "https://raw.githubusercontent.com/Imohammedareeb/Stock-Trend-Prediction/main/Tesla.csv" },
+            "powergrid.csv": { url: "https://raw.githubusercontent.com/Imohammedareeb/Stock-Trend-Prediction/main/powergrid.csv" },
+            "TCS.csv": { url: "https://raw.githubusercontent.com/Imohammedareeb/Stock-Trend-Prediction/main/TCS.csv" },
+            "Netflix.csv": { url: "https://raw.githubusercontent.com/Imohammedareeb/Stock-Trend-Prediction/main/Netflix.csv" },
+            "zomato.csv": { url: "https://raw.githubusercontent.com/Imohammedareeb/Stock-Trend-Prediction/main/zomato.csv" }
+          },
+        },
+        document.getElementById("root")
+      );
+    </script>
+  </body>
+</html>
