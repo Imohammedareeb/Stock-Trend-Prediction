@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+venv/
+env/
+.streamlit/
+# *.csv
+# User might want to keep CSVs for this small project, but typically data is ignored.
+# Given it's a small project, maybe I'll keep them for now but ignore the rest.
